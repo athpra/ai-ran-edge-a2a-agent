@@ -1,0 +1,142 @@
+<svg viewBox="0 0 1200 860" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="End-to-end flow from a caller's complaint through voice-ai-agent, this repo's orchestrator and emulated device agent, to either a self-resolved answer or escalation to mobile-noc-agent-demo. Solid lines are built and exercised today; dashed lines are integration points not yet wired, or mocked; the teal lines are the A2A-T exchange this repo demonstrates.">
+  <title>AI-RAN Edge A2A Agent — end-to-end architecture</title>
+  <desc>Three systems: voice-ai-agent (top), this repo's orchestrator and emulated device agent (middle), and mobile-noc-agent-demo (bottom). A caller's complaint flows down into the orchestrator, which queries the device agent over an A2A-T exchange, then either resolves the issue directly or escalates to the NOC agent for human approval, before a resolution is spoken back to the caller.</desc>
+
+  <defs>
+    <marker id="arrowInk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b3440"/>
+    </marker>
+    <marker id="arrowDashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a94a3"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #2b3440; }
+    .box { fill: #f4f6f8; stroke: #2b3440; stroke-width: 1.4; }
+    .box-accent { fill: #e6f4f2; stroke: #0f766e; stroke-width: 1.8; }
+    .title { font-size: 13px; font-weight: 600; }
+    .sub { font-size: 11px; fill: #55606e; }
+    .lbl { font-size: 11px; }
+    .lbl-dashed { font-size: 11px; fill: #5c6673; }
+    .lbl-teal { font-size: 10.5px; fill: #0f766e; font-weight: 600; }
+    .container { fill: none; stroke: #2b3440; stroke-width: 1; stroke-dasharray: 3 4; }
+    .container-label { font-size: 12px; font-style: italic; fill: #55606e; }
+    .solid { stroke: #2b3440; stroke-width: 1.6; fill: none; marker-end: url(#arrowInk); }
+    .dashed { stroke: #8a94a3; stroke-width: 1.6; fill: none; stroke-dasharray: 6 5; marker-end: url(#arrowDashed); }
+    .teal { stroke: #0f766e; stroke-width: 1.8; fill: none; marker-end: url(#arrowTeal); }
+  </style>
+
+  <!-- repo/system containers -->
+  <rect class="container" x="40" y="20" width="1100" height="110"/>
+  <text class="container-label" x="50" y="36">voice-ai-agent — deployed CML app</text>
+
+  <rect class="container" x="320" y="220" width="820" height="310"/>
+  <text class="container-label" x="330" y="236">ai-ran-edge-a2a-agent</text>
+
+  <rect class="container" x="320" y="620" width="600" height="110"/>
+  <text class="container-label" x="330" y="636">mobile-noc-agent-demo — deployed CML app</text>
+
+  <!-- voice-ai-agent boxes -->
+  <rect class="box" x="60" y="40" width="220" height="70" rx="8"/>
+  <text class="title" x="170" y="72" text-anchor="middle">Caller</text>
+  <text class="sub" x="170" y="88" text-anchor="middle">(phone call)</text>
+
+  <rect class="box" x="340" y="40" width="220" height="70" rx="8"/>
+  <text class="title" x="450" y="72" text-anchor="middle">STT + LLM</text>
+  <text class="sub" x="450" y="88" text-anchor="middle">capture complaint</text>
+
+  <rect class="box" x="900" y="40" width="220" height="70" rx="8"/>
+  <text class="title" x="1010" y="72" text-anchor="middle">TTS</text>
+  <text class="sub" x="1010" y="88" text-anchor="middle">speak resolution</text>
+
+  <!-- this-repo boxes -->
+  <rect class="box-accent" x="340" y="240" width="220" height="70" rx="8"/>
+  <text class="title" x="450" y="272" text-anchor="middle">Orchestrator</text>
+  <text class="sub" x="450" y="288" text-anchor="middle">decision.py</text>
+
+  <rect class="box-accent" x="700" y="240" width="220" height="70" rx="8"/>
+  <text class="title" x="810" y="266" text-anchor="middle">Device Agent (emulated)</text>
+  <text class="sub" x="810" y="283" text-anchor="middle">a2a_server.py</text>
+
+  <rect class="box" x="340" y="440" width="220" height="70" rx="8"/>
+  <text class="title" x="450" y="472" text-anchor="middle">noc_client.py</text>
+  <text class="sub" x="450" y="488" text-anchor="middle">(mock)</text>
+
+  <rect class="box" x="900" y="440" width="220" height="70" rx="8"/>
+  <text class="title" x="1010" y="472" text-anchor="middle">Resolution</text>
+  <text class="sub" x="1010" y="488" text-anchor="middle">message</text>
+
+  <!-- mobile-noc-agent-demo boxes -->
+  <rect class="box" x="340" y="640" width="220" height="70" rx="8"/>
+  <text class="title" x="450" y="668" text-anchor="middle">NOC Agent (LangGraph)</text>
+  <text class="sub" x="450" y="684" text-anchor="middle">investigate</text>
+
+  <rect class="box" x="680" y="640" width="220" height="70" rx="8"/>
+  <text class="title" x="790" y="668" text-anchor="middle">Human approval</text>
+  <text class="sub" x="790" y="684" text-anchor="middle">(Streamlit UI)</text>
+
+  <!-- arrows -->
+  <!-- 1: Caller -> STT+LLM -->
+  <line class="solid" x1="280" y1="75" x2="338" y2="75"/>
+  <text class="lbl" x="309" y="62" text-anchor="middle">audio</text>
+
+  <!-- 2: STT+LLM -> Orchestrator -->
+  <line class="dashed" x1="500" y1="110" x2="500" y2="238"/>
+  <text class="lbl-dashed" x="513" y="168">complaint text</text>
+  <text class="lbl-dashed" x="513" y="182">(not yet wired)</text>
+
+  <!-- 3a: Orchestrator -> Device Agent (A2A-T request) -->
+  <line class="teal" x1="562" y1="260" x2="698" y2="260"/>
+  <text class="lbl-teal" x="630" y="248" text-anchor="middle">get_device_signals</text>
+
+  <!-- 3b: Device Agent -> Orchestrator (A2A-T response) -->
+  <line class="teal" x1="698" y1="295" x2="562" y2="295"/>
+  <text class="lbl-teal" x="630" y="312" text-anchor="middle">device_signals</text>
+
+  <!-- 4a: Orchestrator -> noc_client (escalate) -->
+  <line class="solid" x1="420" y1="312" x2="420" y2="438"/>
+  <text class="lbl" x="433" y="378">escalated:</text>
+  <text class="lbl" x="433" y="392">else, drops&gt;0</text>
+
+  <!-- 4b: Orchestrator -> Resolution (self-resolve) -->
+  <line class="solid" x1="480" y1="312" x2="897" y2="452"/>
+  <text class="lbl" x="689" y="358" text-anchor="middle">self-resolved:</text>
+  <text class="lbl" x="689" y="372" text-anchor="middle">rate &#8805;50% &amp; drops&gt;0</text>
+
+  <!-- 5: noc_client -> NOC Agent -->
+  <line class="dashed" x1="450" y1="512" x2="450" y2="638"/>
+  <text class="lbl-dashed" x="463" y="572">mocked — no real</text>
+  <text class="lbl-dashed" x="463" y="586">API yet</text>
+
+  <!-- 6: NOC Agent -> Human approval -->
+  <line class="solid" x1="562" y1="675" x2="678" y2="675"/>
+  <text class="lbl" x="620" y="662" text-anchor="middle">approve / deny</text>
+
+  <!-- 7: Human approval -> Resolution -->
+  <line class="dashed" x1="900" y1="638" x2="900" y2="512"/>
+  <text class="lbl-dashed" x="913" y="578">approved</text>
+  <text class="lbl-dashed" x="913" y="592">(not yet wired)</text>
+
+  <!-- 8: Resolution -> TTS -->
+  <line class="dashed" x1="1010" y1="438" x2="1010" y2="112"/>
+  <text class="lbl-dashed" x="1023" y="272">speak result</text>
+  <text class="lbl-dashed" x="1023" y="286">to caller (not yet wired)</text>
+
+  <!-- 9: TTS -> Caller (closes the call loop) -->
+  <path class="solid" d="M900,110 C900,195 280,195 280,110"/>
+  <text class="lbl" x="590" y="213" text-anchor="middle">speaks resolution to caller</text>
+
+  <!-- legend -->
+  <line x1="60" y1="766" x2="110" y2="766" class="solid"/>
+  <text class="lbl" x="120" y="770">built &amp; exercised today (this repo's demo, or the existing apps)</text>
+
+  <line x1="60" y1="794" x2="110" y2="794" class="dashed"/>
+  <text class="lbl-dashed" x="120" y="798">integration point not yet wired, or mocked</text>
+
+  <line x1="60" y1="822" x2="110" y2="822" class="teal"/>
+  <text class="lbl-teal" x="120" y="826">A2A-T exchange — this repo's core contribution</text>
+</svg>

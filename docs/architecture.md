@@ -1,28 +1,12 @@
 # Architecture
 
-## Components
+## End-to-end flow
 
-```
- caller complaint (text, from a transcript)
-        |
-        v
-+-------------------+        A2A-T-shaped        +------------------+
-|   orchestrator     | -------------------------> |   device_agent    |
-|  decision.py        | <------------------------- |  synthetic UE     |
-|                     |      device signals         |  signals (fm/pm)  |
-+---------+-----------+                             +------------------+
-          |
-          | escalate?
-          v
-  +------------------+
-  |   noc_client.py    |  -- stub; mobile-noc-agent-demo
-  |   (mocked today)   |     has no API to call yet
-  +------------------+
-```
+![End-to-end architecture: a caller's complaint flows from voice-ai-agent into this repo's orchestrator, which queries the emulated device agent over A2A-T, then either resolves the issue directly or escalates to mobile-noc-agent-demo for human approval, before a resolution is spoken back to the caller.](assets/architecture.svg)
 
-`demo/run_demo.py` drives this end to end with no network calls and no
-dependency on a live phone call: it stands in for the "caller complaint"
-that would otherwise come from `voice-ai-agent`'s call transcript.
+Solid lines are built and exercised today (this repo's demo, or the existing deployed apps). Dashed lines are the integration points that aren't wired yet -- into `voice-ai-agent`'s call flow, and into `mobile-noc-agent-demo` -- plus `noc_client.py`'s mock. The teal lines are the A2A-T exchange between the orchestrator and the emulated device agent -- the one piece of new protocol work this repo actually demonstrates.
+
+`demo/run_demo.py` drives the middle of this end to end with no network calls and no dependency on a live phone call: it stands in for the "caller complaint" that would otherwise come from `voice-ai-agent`'s call transcript, and stops at the decision (self-resolve or escalate) rather than actually speaking back to a caller or paging a NOC engineer.
 
 ## The two paths
 

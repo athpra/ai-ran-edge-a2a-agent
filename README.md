@@ -12,6 +12,12 @@ applications; this one is about *where inference runs* (edge vs. centralized)
 and *how two agents agree to talk to each other* (A2A-T). It depends on
 neither of their codebases.
 
+## Architecture
+
+![End-to-end architecture: a caller's complaint flows from voice-ai-agent into this repo's orchestrator, which queries the emulated device agent over A2A-T, then either resolves the issue directly or escalates to mobile-noc-agent-demo for human approval, before a resolution is spoken back to the caller.](docs/assets/architecture.svg)
+
+Solid lines are built and exercised today (this repo's demo, or the existing deployed apps). Dashed lines are the integration points that aren't wired yet -- into `voice-ai-agent`'s call flow, and into `mobile-noc-agent-demo` -- plus `noc_client.py`'s mock. The teal lines are the one piece of new protocol work this repo actually demonstrates: the A2A-T exchange between the orchestrator and the emulated device agent. See `docs/architecture.md` for the full breakdown and the A2A-T fidelity caveat.
+
 ## How this relates to the other repos
 
 - **[voice-ai-agent](https://github.com/athpra/voice-ai)** -- handles the real
